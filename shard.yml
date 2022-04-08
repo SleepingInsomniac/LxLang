@@ -1,0 +1,13 @@
+name: lxlang
+version: 0.1.0
+
+authors:
+  - Alex Clink <alexclink@gmail.com>
+
+targets:
+  lxlang:
+    main: src/lxlang.cr
+
+crystal: 1.3.2
+
+license: MIT
