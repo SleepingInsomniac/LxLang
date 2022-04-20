@@ -14,8 +14,28 @@ module LxLang::T
   class ParenEnd < SemanticToken
   end
 
+  class BlockStart < SemanticToken
+  end
+
+  class BlockEnd < SemanticToken
+  end
+
   class StatementEnd < SemanticToken
   end
+
+  class Assign < SemanticToken
+  end
+
+  class TypeAssign < SemanticToken
+  end
+
+  class Comparison < SemanticToken
+  end
+
+  class Pipe < SemanticToken
+  end
+
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   abstract class MathToken < SemanticToken
   end
@@ -26,27 +46,17 @@ module LxLang::T
   class Additive < MathToken
   end
 
-  class Assign < SemanticToken
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  abstract class Logical < SemanticToken
   end
 
-  class BlockStart < SemanticToken
+  class And < Logical
   end
 
-  class BlockEnd < SemanticToken
+  class Or < Logical
   end
 
-  class TypeAssign < SemanticToken
-  end
-
-  class Comparison < SemanticToken
-  end
-
-  class Logical < SemanticToken
-  end
-
-  class Or < SemanticToken
-  end
-
-  class And < SemanticToken
+  class Not < Logical
   end
 end

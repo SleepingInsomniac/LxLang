@@ -5,7 +5,15 @@ module LxLang
   describe Tokenizer do
     it "tokenizes a string" do
       tokenizer = Tokenizer.new(<<-STRING)
-        ; {} () < > <= >= == != && || = : if else CONST ident iDent_2 Type * / + - 1 2i8 3i16 4i32 "string" 'c' true false nil
+        ; {} ()
+        # Comment
+        < > <= >= == !=
+        && || ! = :
+        if else while loop break return
+        CONST ident iDent_2 Type
+        * / + -
+        1 2i8 3i16 4i32
+        "string" 'c' true false nil
       STRING
 
       [
@@ -22,10 +30,15 @@ module LxLang
         T::Comparison,     # !=
         T::And,            # &&
         T::Or,             # ||
+        T::Not,            # !
         T::Assign,         # =
         T::TypeAssign,     # :
         T::If,             # if
         T::Else,           # else
+        T::While,          # while
+        T::Loop,           # loop
+        T::Break,          # break
+        T::Return,         # return
         T::Constant,       # CONST
         T::Identifier,     # ident
         T::Identifier,     # iDent_2

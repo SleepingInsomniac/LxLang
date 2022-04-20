@@ -10,4 +10,25 @@ module LxLang::T
 
   class Else < Keyword
   end
+
+  class While < Keyword
+  end
+
+  class Loop < Keyword
+  end
+
+  class Break < Keyword
+  end
+
+  class Return < Keyword
+  end
+
+  class In < Keyword
+  end
+
+  class Out < Keyword
+  end
+
+  class Public < Keyword
+  end
 end

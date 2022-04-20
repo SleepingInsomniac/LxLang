@@ -1,5 +1,8 @@
 module LxLang
   class Statement
+    class Error < Exception
+    end
+
     include JSON::Serializable
 
     getter type : String
@@ -17,6 +20,14 @@ module LxLang
   class Expression < Statement
   end
 
+  class UnaryExpression < Expression
+    property argument : Token | Statement | Nil
+
+    def initialize(@value, @argument)
+      super(@value)
+    end
+  end
+
   class BinaryExpression < Expression
     property left : Token | Statement
     property right : Token | Statement
@@ -30,13 +41,36 @@ module LxLang
     end
   end
 
+  class Param < Expression
+    property data_type : T::Type | Nil
+    property default : Token | Nil
+
+    def initialize(@value, @data_type = nil, @default = nil)
+      raise Error.new("Invalid default assignment #{@default}") unless @default.is_a?(Nil | T::Identifier | T::Constant | T::Literal)
+      super(@value)
+    end
+  end
+
+  class Declaration
+    include JSON::Serializable
+
+    getter type : String
+    property name : T::Identifier | T::Constant
+    property data_type : T::Type
+
+    def initialize(@name, @data_type)
+      @type = self.class.name
+    end
+  end
+
   class AssignmentExpression < Expression
     property data_type : Token?
+    property is_public : Bool = false
     property left : Token | Statement
-    property right : Token | Statement | Block
+    property right : Token | Statement | Block | Nil
 
     def initialize(@value, @left, @right, @data_type = nil)
-      raise "Invalid lefthand assignment #{@left}" unless @left.is_a?(T::Identifier | T::Constant)
+      raise Error.new("Invalid lefthand assignment #{@left}") unless @left.is_a?(T::Identifier | T::Constant)
       super(@value)
     end
   end
@@ -47,6 +81,31 @@ module LxLang
     property alternative : Statement | Block | Nil
 
     def initialize(@value, @condition, @consequent, @alternative = nil)
+      super(@value)
+    end
+  end
+
+  class WhileStatement < Statement
+    property condition : Statement | Block
+    property body : Statement | Block
+
+    def initialize(@value, @condition, @body)
+      super(@value)
+    end
+  end
+
+  class LoopStatement < Statement
+    property body : Statement | Block
+
+    def initialize(@value, @body)
+      super(@value)
+    end
+  end
+
+  class ReturnStatement < Statement
+    property expression : Expression | Nil
+
+    def initialize(@value, @expression)
       super(@value)
     end
   end

@@ -7,13 +7,11 @@ module LxLang
     include JSON::Serializable
 
     getter type : String
-    property body : Array(Statement | Block) = [] of Statement | Block
+    property root_block : Block = Block.new
+
+    delegate :body, :body=, to: @root_block
 
     def initialize
-      @type = self.class.name
-    end
-
-    def initialize(@body)
       @type = self.class.name
     end
 

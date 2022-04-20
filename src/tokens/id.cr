@@ -1,7 +1,11 @@
 module LxLang::T
   abstract class IDToken < Token
     def value
-      @value
+      @value.gsub(/^@/, "")
+    end
+
+    def pointer?
+      @value[0] == "@"
     end
   end
 

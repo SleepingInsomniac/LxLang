@@ -9,6 +9,10 @@ module LxLang
     property line : Int32
     property char : Int32
 
+    def self.to_s(io)
+      io << {{ @type.name.stringify.split("::").last }}
+    end
+
     def initialize(@value, @line, @char)
       @type = self.class.name
     end
@@ -16,7 +20,7 @@ module LxLang
     abstract def value
 
     def to_s(io)
-      io << '<' << self.class.name << " " << @line << ":" << @char << " : " << value
+      io << self.class << " '" << @value << "' @ " << @line << ':' << @char
     end
   end
 end
