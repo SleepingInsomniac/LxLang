@@ -285,8 +285,45 @@ module LxLang
         argument = parse_unary_expression
         UnaryExpression.new(operator, argument)
       else
-        parse_primary_expression
+        parse_call_expression
       end
+    end
+
+    def parse_call_expression
+      exp = parse_member_expression
+
+      while next_token_is?(T::ParenStart)
+        value = fetch_token(T::ParenStart)
+        arguments = parse_argument_list
+        fetch_token(T::ParenEnd)
+        exp = CallExpression.new(value, exp, arguments)
+      end
+
+      exp
+    end
+
+    def parse_argument_list
+      arguments = [] of Statement | Token
+      return arguments if next_token_is?(T::ParenEnd)
+
+      loop do
+        arguments.push(parse_assignment_expression)
+        break unless next_token_is?(T::Separator)
+        fetch_token(T::Separator)
+      end
+
+      arguments
+    end
+
+    def parse_member_expression
+      left = parse_primary_expression
+
+      while next_token_is?(T::Navigator)
+        value = fetch_token(T::Navigator)
+        left = MemberExpression.new(value, left, fetch_token(T::Identifier))
+      end
+
+      left
     end
 
     def parse_primary_expression

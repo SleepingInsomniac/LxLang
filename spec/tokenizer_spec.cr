@@ -14,6 +14,7 @@ module LxLang
         * / + -
         1 2i8 3i16 4i32
         "string" 'c' true false nil
+        , .
       STRING
 
       [
@@ -56,6 +57,8 @@ module LxLang
         T::Bool,           # true
         T::Bool,           # false
         T::Nil,            # nil
+        T::Separator,      # ,
+        T::Navigator,      # .
         T::Eos,
       ].each do |token|
         tokenizer.next_token.class.should eq(token)

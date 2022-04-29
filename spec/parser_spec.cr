@@ -245,7 +245,7 @@ module LxLang
       JSON
     end
 
-    it "parse multiple assignments" do
+    it "parses multiple assignments" do
       ast = Parser.new("y = x = 10;").parse
       ast.to_pretty_json.should eq(<<-JSON)
       {
@@ -333,6 +333,80 @@ module LxLang
                   "char": 6
                 }
               }
+            }
+          ]
+        }
+      }
+      JSON
+    end
+
+    it "parses member expressions" do
+      ast = Parser.new("x.y").parse
+      ast.to_pretty_json.should eq(<<-JSON)
+      {
+        "type": "LxLang::Program",
+        "root_block": {
+          "type": "LxLang::Block",
+          "declarations": [],
+          "body": [
+            {
+              "type": "LxLang::MemberExpression",
+              "value": {
+                "type": "LxLang::T::Navigator",
+                "value": ".",
+                "line": 1,
+                "char": 2
+              },
+              "left": {
+                "type": "LxLang::T::Identifier",
+                "value": "x",
+                "line": 1,
+                "char": 1
+              },
+              "right": {
+                "type": "LxLang::T::Identifier",
+                "value": "y",
+                "line": 1,
+                "char": 3
+              }
+            }
+          ]
+        }
+      }
+      JSON
+    end
+
+    it "parses call expressions" do
+      ast = Parser.new("x(y)").parse
+      ast.to_pretty_json.should eq(<<-JSON)
+      {
+        "type": "LxLang::Program",
+        "root_block": {
+          "type": "LxLang::Block",
+          "declarations": [],
+          "body": [
+            {
+              "type": "LxLang::CallExpression",
+              "value": {
+                "type": "LxLang::T::ParenStart",
+                "value": "(",
+                "line": 1,
+                "char": 2
+              },
+              "caller": {
+                "type": "LxLang::T::Identifier",
+                "value": "x",
+                "line": 1,
+                "char": 1
+              },
+              "arguments": [
+                {
+                  "type": "LxLang::T::Identifier",
+                  "value": "y",
+                  "line": 1,
+                  "char": 3
+                }
+              ]
             }
           ]
         }

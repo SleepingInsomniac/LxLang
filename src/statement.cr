@@ -35,10 +35,6 @@ module LxLang
     def initialize(@value, @left, @right)
       super(@value)
     end
-
-    def to_s(io)
-      io << self.class.name << " : " << @value.value << "\n  Left: " << @left << "\n  Right: " << @right
-    end
   end
 
   class Param < Expression
@@ -70,8 +66,21 @@ module LxLang
     property right : Token | Statement | Block | Nil
 
     def initialize(@value, @left, @right, @data_type = nil)
-      raise Error.new("Invalid lefthand assignment #{@left}") unless @left.is_a?(T::Identifier | T::Constant)
+      raise Error.new("Invalid lefthand assignment #{@left}") unless @left.is_a?(T::Identifier | T::Constant | MemberExpression)
       super(@value)
+    end
+  end
+
+  class MemberExpression < BinaryExpression
+  end
+
+  class CallExpression < Expression
+    property caller : Token | Statement
+    property arguments : Array(Token | Statement) = [] of Token | Statement
+
+    def initialize(@value, @caller, arguments : Array(Token | Statement)?)
+      super(@value)
+      @arguments = arguments if arguments
     end
   end
 

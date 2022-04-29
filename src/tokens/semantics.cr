@@ -35,6 +35,9 @@ module LxLang::T
   class Pipe < SemanticToken
   end
 
+  class Navigator < SemanticToken
+  end
+
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   abstract class MathToken < SemanticToken

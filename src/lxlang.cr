@@ -82,10 +82,18 @@ end
 #   return 0
 # PROG
 
+# ast = LxLang::Parser.new(<<-PROG).parse
+#   x = 4 + 2 + (3 - 2)
+#
+#   if x == 0 {
+#     return 1
+#   }
+# PROG
+
 ast = LxLang::Parser.new(<<-PROG).parse
-  x = 4 + 2 + (3 - 2)
+  add = { in x : Int8, y : Int8, out Int8 ret x + y }
+  add(1, 2)
 PROG
 
-# puts ast.to_pretty_json
-
-puts LxLang::CodeGen.new(ast).sap_asm
+puts ast.to_pretty_json
+# puts LxLang::CodeGen.new(ast).sap_asm
