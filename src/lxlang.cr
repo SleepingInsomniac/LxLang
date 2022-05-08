@@ -1,5 +1,6 @@
 require "./parser"
 require "./code_gen"
+require "./sap"
 
 module Lxlang
   VERSION = "0.1.0"
@@ -91,9 +92,11 @@ end
 # PROG
 
 ast = LxLang::Parser.new(<<-PROG).parse
-  add = { in x : Int8, y : Int8, out Int8 ret x + y }
-  add(1, 2)
+foo = {}
+  # add = { in x : Int8, y : Int8 out Int8 ret x + y }
+  # add(1, 2) # => 3
 PROG
 
-puts ast.to_pretty_json
+# puts ast.to_pretty_json
+puts LxLang::SAP.new(ast).to_asm
 # puts LxLang::CodeGen.new(ast).sap_asm

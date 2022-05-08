@@ -13,7 +13,7 @@ module LxLang
       io << {{ @type.name.stringify.split("::").last }}
     end
 
-    def initialize(@value, @line, @char)
+    def initialize(@value, @line = 0, @char = 0)
       @type = self.class.name
     end
 

@@ -204,6 +204,7 @@ module LxLang
 
             right =
               if next_token_is?(T::BlockStart)
+                data_type = T::Type.new("Int8*")
                 parse_block
               else
                 parse_assignment_expression

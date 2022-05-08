@@ -2,6 +2,7 @@ module LxLang
   class CodeGen
     @program : Program
     @declarations = {} of String => Int8
+    @blocks = {} of String => Array(String)
 
     def initialize(@program)
     end
@@ -52,6 +53,8 @@ module LxLang
         sap_bin_exp(instructions, exp, depth + 1)
       when T::Numeric
         instructions << {"ldi #{exp.value}", exp.to_s}
+      when IfStatment
+        sap_conditional(condition, consequent, alternative)
       else
         instructions << {"", "Unhandled expression: #{exp.class.name}"}
       end
@@ -79,6 +82,9 @@ module LxLang
       else
         instructions << {"", "Unhandled token: #{exp.value}"}
       end
+    end
+
+    def sap_conditional(condition, consequent, alternative)
     end
   end
 end
